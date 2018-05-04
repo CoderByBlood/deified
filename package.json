@@ -1,0 +1,27 @@
+{
+  "name": "deified",
+  "version": "0.0.1",
+  "description": "A Lightweight IoC Framework",
+  "main": "deified.js",
+  "scripts": {
+    "test": "jest",
+    "jsdoc": "jsdoc  --configure ./jsdoc-conf.json --package ./package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoderByBlood/deified.git"
+  },
+  "author": "Coder by Blood, Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CoderByBlood/deified/issues"
+  },
+  "homepage": "https://github.com/CoderByBlood/deified#readme",
+  "devDependencies": {
+    "jest": "^22.4.3",
+    "jsdoc": "^3.5.5"
+  },
+  "dependencies": {
+    "micromatch": "^3.1.10"
+  }
+}

@@ -1,2 +1,2 @@
 # deified
-Lightweight IoC Framework
+Lightweight director scanner with filtering options
