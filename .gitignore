@@ -57,3 +57,15 @@ typings/
 # dotenv environment variables file
 .env
 
+#generated output exclusions
+log
+out
+doc
+
+#IDE exclusions
+nbproject
+.idea
+.vscode
+
+#OS exclusions
+.DS_Store
