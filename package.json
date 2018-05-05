@@ -1,9 +1,11 @@
 {
   "name": "deified",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Fast, lightweight asynchronous directory scanner built on micromatch",
   "author": "Coder by Blood, Inc.",
-  "keywords": ["directory scanner"],
+  "keywords": [
+    "directory scanner"
+  ],
   "main": "deified.js",
   "scripts": {
     "test": "jest",
@@ -13,7 +15,6 @@
     "type": "git",
     "url": "git+https://github.com/CoderByBlood/deified.git"
   },
-  "author": "Coder by Blood, Inc.",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/CoderByBlood/deified/issues"
