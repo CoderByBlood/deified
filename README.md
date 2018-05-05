@@ -58,7 +58,7 @@ $ npm test
 
 ## People
 
-The original author of Express is [Phillip Smith](https://github.com/phillipsmith)
+The original author of deified is [Phillip Smith](https://github.com/phillipsmith)
 
 The current lead maintainer is [Phillip Smith](https://github.com/phillipsmith)
 
