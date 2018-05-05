@@ -14,7 +14,7 @@ const config = { //optional - all configuration has intuitive defaults
     options: {}, //options for micromatch mm() - defaults to undefied
   },
   filter: {
-    regexes: ['/?test/'] //defaults to filter hidden files and node_modules
+    regexes: ['/?test/'] //defaults to filter out hidden files and node_modules
   },
   scan: {
     options: { encoding: 'utf8' } //options for readdir - defaults to undefined
@@ -46,6 +46,10 @@ $ npm install deified
   * Filters apply during directory scanning to eliminate unnessesary IO
   * Globs apply after scanning to fine tune results
   * IO uses asynchronous filesystem calls
+
+**Filters and globs are inverses of each other**
+  * *Filters* remove paths that match (negative)
+  * *Globs* keep paths that match (postive)
 
 ## Tests
 
