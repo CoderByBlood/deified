@@ -1,7 +1,9 @@
 {
   "name": "deified",
   "version": "0.0.1",
-  "description": "Fast, lightweight asynchronous director scanner built on micromatch",
+  "description": "Fast, lightweight asynchronous directory scanner built on micromatch",
+  "author": "Coder by Blood, Inc.",
+  "keywords": ["directory scanner"],
   "main": "deified.js",
   "scripts": {
     "test": "jest",

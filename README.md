@@ -1,5 +1,5 @@
 # deified
-Fast, lightweight, asynchronous director scanner built on [micromatch](https://github.com/micromatch/micromatch)
+Fast, lightweight, asynchronous directory scanner built on [micromatch](https://github.com/micromatch/micromatch)
 
 ```js
 const deified = require('deified');
