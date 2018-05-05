@@ -35,15 +35,21 @@ const range = constants.range;
 
 describe('The globber should...', () => {
   test('using defaults, identify all but hidden files', () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
-    const mmGlobs = ['**/*'];
-    const selectedPaths = mm(paths, mmGlobs);
+    const selectedPaths = mm(paths, '**/*');
     const glob = globber.configure();
     const globbed = glob(paths);
 
     expect(globbed).toEqual(expect.arrayContaining(selectedPaths));
     expect(selectedPaths).toEqual(expect.arrayContaining(globbed));
+
+    //corner case
+    const globbed_2 = globber.configure({ globs: undefined });
+    const selected_2 = globbed_2(paths);
+
+    expect(selected_2).toEqual(expect.arrayContaining(selectedPaths));
+    expect(selectedPaths).toEqual(expect.arrayContaining(selected_2));
   });
 
   test('using a custom glob pattern, identify specified files', () => {
@@ -61,7 +67,7 @@ describe('The globber should...', () => {
 
 describe('The filter should...', () => {
   test('using defaults, filter hidden and node_modules files', () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     const regexes = ['/[.]', '^[.]', '/?node_modules/'];
     const selectedPaths = paths.filter(x => regexes.every(r => !x.match(r)));
@@ -70,10 +76,17 @@ describe('The filter should...', () => {
 
     expect(filtered).toEqual(expect.arrayContaining(selectedPaths));
     expect(selectedPaths).toEqual(expect.arrayContaining(filtered));
+
+    //corner case
+    const filter_2 = filtration.configure({ regexes: undefined });
+    const filtered_2 = filter_2(paths);
+
+    expect(filtered_2).toEqual(expect.arrayContaining(selectedPaths));
+    expect(selectedPaths).toEqual(expect.arrayContaining(filtered_2));
   });
 
   test('using a custom regex, filter specified files', () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     const regexes = ['node_modules/', '/selector/', '/?test/'];
     const selectedPaths = paths.filter(x => regexes.every(r => !x.match(r)));
@@ -82,18 +95,33 @@ describe('The filter should...', () => {
 
     expect(filtered).toEqual(expect.arrayContaining(selectedPaths));
     expect(selectedPaths).toEqual(expect.arrayContaining(filtered));
+
+    //corner case
+    const regexes_2 = '(node_modules/|/selector/|/?test/)';
+    const selectedPaths_2 = paths.filter(x => !x.match(regexes_2));
+    const filter_2 = filtration.configure({ regexes: regexes_2 });
+    const filtered_2 = filter_2(paths);
+
+    expect(filtered_2).toEqual(expect.arrayContaining(selectedPaths_2));
+    expect(selectedPaths_2).toEqual(expect.arrayContaining(filtered_2));
   });
 });
 
 describe('The scanner should...', () => {
   test('list all files starting from the default directory', async() => {
-    expect.assertions(2);
+    expect.assertions(4);
+
+    const tests = ['package.json', 'tests/unit.test.js'];
 
     const scan = scanner.configure();
     const results = await scan();
 
-    expect(results).toContain('package.json');
-    expect(results).toContain('tests/unit.test.js');
+    tests.forEach(x => expect(results).toContain(x));
+
+    //corner case
+    const results_2 = await scan({ directory: undefined });
+
+    tests.forEach(x => expect(results_2).toContain(x));
   });
 
   test('list files starting from a specified directory', async() => {

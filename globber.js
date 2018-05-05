@@ -49,7 +49,6 @@ module.exports = {
   configure: function(conf) {
     const config = Object.assign({}, defaultConfig, conf);
     config.globs = config.globs || defaultConfig.globs;
-    config.globs = (config.globs.every && config.globs) || [config.globs];
 
     /**
      * Filters the paths by the configured globs

@@ -48,11 +48,8 @@ module.exports = {
    **/
   configure: function(conf) {
     const config = Object.assign({}, defaultConfig, conf);
-    const snap = config.regexes;
     config.regexes = config.regexes || defaultConfig.regexes;
     config.regexes = (config.regexes.every && config.regexes) || [config.regexes];
-
-    if (snap !== config.regexes) console.log(config);
 
     /**
      * Filters the paths by the configured regular expressions
