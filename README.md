@@ -4,6 +4,7 @@
   [![NPM Version][npm-image]][npm-url]
   [![NPM Downloads][downloads-image]][downloads-url]
   [![CI Build][travis-image]][travis-url]
+  [![Test Coverage][coveralls-image]][coveralls-url]
 
 ```js
 const deified = require('deified');
@@ -73,3 +74,5 @@ The current lead maintainer is [Phillip Smith](https://github.com/phillipsmith)
 [downloads-url]: https://www.npmjs.com/package/deified
 [travis-image]: https://travis-ci.org/CoderByBlood/deified.svg?branch=master
 [travis-url]: https://travis-ci.org/CoderByBlood/deified
+[coveralls-image]: https://img.shields.io/coveralls/CoderByBlood/deified/master.svg
+[coveralls-url]: https://coveralls.io/r/CoderByBlood/deified?branch=master
