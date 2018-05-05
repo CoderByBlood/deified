@@ -1,5 +1,5 @@
 # deified
-Fast, lightweight asynchronous director scanner built on [micromatch](https://github.com/micromatch/micromatch)
+Fast, lightweight, asynchronous director scanner built on [micromatch](https://github.com/micromatch/micromatch)
 
 ```js
 const deified = require('deified');
@@ -26,7 +26,7 @@ This is a [Node.js](https://nodejs.org/en/) module available through the
 [npm registry](https://www.npmjs.com/).
 
 Before installing, [download and install Node.js](https://nodejs.org/en/download/).
-Node.js 7.7 or higher is required.
+Node.js 8.11.1 or higher is required.
 
 Installation is done using the
 [`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
