@@ -1,6 +1,6 @@
 {
   "name": "deified",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Fast, lightweight asynchronous directory scanner built on micromatch",
   "author": "Coder by Blood, Inc.",
   "keywords": [
