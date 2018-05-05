@@ -128,7 +128,7 @@ describe('Deified should...', () => {
     const results = await deify();
 
     expect(results.length).toBeGreaterThan(10);
-    expect(results.every(x => x.match(/package.json$/))).toBeTruthy();
+    expect(results.every(x => x.match(/package[.]json$/))).toBeTruthy();
   });
 
   test('using defaults, identify typical files from specified directory', async() => {
@@ -150,6 +150,28 @@ describe('Deified should...', () => {
     const results = await deify({ directory: __dirname });
 
     expect(results.length).toBeGreaterThan(0);
-    expect(results.some(x => x.match(/intergration.test.js$/))).toBeTruthy();
+    expect(results.some(x => x.match(/intergration.+[.]js$/))).toBeTruthy();
+  });
+
+  test('work using the documented installation', async() => {
+    expect.assertions(1);
+
+    //const deified = require('deified')
+    const config = { //optional - all configuration has intuitive defaults
+      glob: {
+        globs: ['**/*.js'], //passed to micromatch - defaults to [**/*]
+        options: {}, //options for micromatch - defaults to undefied
+      },
+      filter: {
+        regexes: ['/?test/'] //defaults to filter hidden files and node_modules
+      },
+      scan: {
+        options: { encoding: 'utf8' } //options for readdir - defaults to undefined
+      }
+    };
+
+    const deify = deified.configure(config);
+    const paths = await deify({ directory: __dirname }); //pass the directory to scan - defaults to cwd
+    expect(paths.some(x => x.match(/unit.+[.]js$/))).toBeTruthy();
   });
 });
