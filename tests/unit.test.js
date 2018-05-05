@@ -156,10 +156,10 @@ describe('Deified should...', () => {
   test('work using the documented installation', async() => {
     expect.assertions(1);
 
-    //const deified = require('deified')
+    //const deified = require('deified');
     const config = { //optional - all configuration has intuitive defaults
       glob: {
-        globs: ['**/*.js'], //passed to micromatch - defaults to [**/*]
+        globs: ['**/*.js'], //passed to micromatch mm() - defaults to [**/*]
         options: {}, //options for micromatch - defaults to undefied
       },
       filter: {

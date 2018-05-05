@@ -1,7 +1,7 @@
 {
   "name": "deified",
   "version": "0.0.1",
-  "description": "A Lightweight IoC Framework",
+  "description": "Fast, lightweight asynchronous director scanner built on micromatch",
   "main": "deified.js",
   "scripts": {
     "test": "jest",

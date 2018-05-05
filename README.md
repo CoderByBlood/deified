@@ -1,12 +1,12 @@
 # deified
-Fast, lightweight asynchronous director scanner built on micromatch
+Fast, lightweight asynchronous director scanner built on [micromatch](https://github.com/micromatch/micromatch)
 
 ```js
-const deified = require('deified')
+const deified = require('deified');
 const config = { //optional - all configuration has intuitive defaults
   glob: {
     globs: ['**/*.js'], //passed to micromatch - defaults to [**/*]
-    options: {}, //options for micromatch - defaults to undefied
+    options: {}, //options for micromatch mm() - defaults to undefied
   },
   filter: {
     regexes: ['/?test/'] //defaults to filter hidden files and node_modules
