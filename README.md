@@ -1,5 +1,9 @@
 # deified
-Fast, lightweight, asynchronous directory scanner built on [micromatch](https://github.com/micromatch/micromatch)
+  Fast, lightweight, asynchronous directory scanner built on [micromatch](https://github.com/micromatch/micromatch)
+
+  [![NPM Version][npm-image]][npm-url]
+  [![NPM Downloads][downloads-image]][downloads-url]
+  [![CI Build][travis-image]][travis-url]
 
 ```js
 const deified = require('deified');
@@ -62,3 +66,10 @@ The current lead maintainer is [Phillip Smith](https://github.com/phillipsmith)
 ## License
 
   [MIT](LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/deified.svg
+[npm-url]: https://www.npmjs.com/package/deified
+[downloads-image]: https://img.shields.io/npm/dm/deified.svg
+[downloads-url]: https://www.npmjs.com/package/deified
+[travis-image]: https://travis-ci.org/CoderByBlood/deified.svg?branch=master
+[travis-url]: https://travis-ci.org/CoderByBlood/deified
