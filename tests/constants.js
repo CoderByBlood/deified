@@ -49,4 +49,42 @@ const paths = [
   'test/.git/test.js', //24
 ];
 
-module.exports = { paths };
+const logConfig = {
+  name: "deified",
+  level: 'debug',
+  children: [{
+      module: "main",
+      level: 'info',
+      children: [
+        { feature: 'configure', level: 'info' },
+        { feature: 'deify', level: 'info' },
+      ],
+    },
+    {
+      module: "scanner",
+      level: 'warn',
+      children: [
+        { feature: 'configure', level: 'trace' },
+        { feature: 'scan', level: 'error' },
+      ],
+    },
+    {
+      module: 'globber',
+      level: 'error',
+      children: [
+        { feature: 'configure', level: 'debug' },
+        { feature: 'glob', level: 'warn' },
+      ],
+    },
+    {
+      module: 'filter',
+      level: 'warn',
+      children: [
+        { feature: 'configure', },
+        { feature: 'filter', level: 'fatal' },
+      ],
+    }
+  ],
+};
+
+module.exports = { paths, logConfig };

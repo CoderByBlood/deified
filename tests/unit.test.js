@@ -25,13 +25,13 @@
 
 const path = require('path');
 const mm = require('micromatch');
+const loggers = require('../loggers');
 const globber = require('../globber');
 const filtration = require('../filter');
 const scanner = require('../scanner');
-const deified = require('../deified');
 const constants = require('./constants');
 const paths = constants.paths;
-const range = constants.range;
+const logConfig = constants.logConfig;
 
 describe('The globber should...', () => {
   test('using defaults, identify all but hidden files', () => {
@@ -135,71 +135,23 @@ describe('The scanner should...', () => {
   });
 });
 
-describe('Deified should...', () => {
-  test('using defaults, identify typical files from cwd', async() => {
-    expect.assertions(2);
+describe('The logger should...', () => {
+  test('create loggers with levels set', () => {
 
-    const tests = [/^[.]/, /[/][.]/, /node_modules/];
-    const deify = deified.configure();
-    const results = await deify();
+    loggers.configure(logConfig);
+    expect(loggers.$().level).toEqual('debug');
+    expect(loggers.$('filter').level).toEqual('warn');
+    expect(loggers.$('scanner', 'configure').level).toEqual('trace');
+    expect(loggers.$('globber', 'configure').level).toEqual('debug');
+    expect(loggers.$('filter', 'configure').level).toEqual('warn');
+    expect(loggers.$('filter', 'filter').level).toEqual('fatal');
 
-    expect(results.length).toBeGreaterThan(10);
-    expect(results.every(x => tests.every(r => !x.match(r)))).toBeTruthy();
-  });
-
-  test('using globs and filters, identify specified files from cwd', async() => {
-    expect.assertions(2);
-
-    const glob = { globs: ['**/package.json'] };
-    const filter = { regexes: ['node_modules/([^/]+/){2,}'] };
-    const deify = deified.configure({ glob, filter });
-    const results = await deify();
-
-    expect(results.length).toBeGreaterThan(10);
-    expect(results.every(x => x.match(/package[.]json$/))).toBeTruthy();
-  });
-
-  test('using defaults, identify typical files from specified directory', async() => {
-    expect.assertions(2);
-
-    const deify = deified.configure();
-    const results = await deify({ directory: __dirname });
-
-    expect(results.length).toBeGreaterThan(0);
-    expect(results.length).toBeLessThan(5);
-  });
-
-  test('using globs and filters, identify specified files and directory', async() => {
-    expect.assertions(2);
-
-    const glob = { globs: ['**/*.test.js'] };
-    const filter = { regexes: ['/[j-z,A-Z][^/]*$'] };
-    const deify = deified.configure({ glob, filter });
-    const results = await deify({ directory: __dirname });
-
-    expect(results.length).toBeGreaterThan(0);
-    expect(results.some(x => x.match(/intergration.+[.]js$/))).toBeTruthy();
-  });
-
-  test('work using the documented installation', async() => {
-    expect.assertions(1);
-
-    //const deified = require('deified');
-    const config = { //optional - all configuration has intuitive defaults
-      glob: {
-        globs: ['**/*.js'], //passed to micromatch mm() - defaults to [**/*]
-        options: {}, //options for micromatch - defaults to undefied
-      },
-      filter: {
-        regexes: ['/?test/'] //defaults to filter hidden files and node_modules
-      },
-      scan: {
-        options: { encoding: 'utf8' } //options for readdir - defaults to undefined
-      }
-    };
-
-    const deify = deified.configure(config);
-    const paths = await deify({ directory: __dirname }); //pass the directory to scan - defaults to cwd
-    expect(paths.some(x => x.match(/unit.+[.]js$/))).toBeTruthy();
+    loggers.configure();
+    expect(loggers.$().level).toEqual('info');
+    expect(loggers.$('filter').level).toEqual('info');
+    expect(loggers.$('scanner', 'configure').level).toEqual('info');
+    expect(loggers.$('globber', 'configure').level).toEqual('info');
+    expect(loggers.$('filter', 'configure').level).toEqual('info');
+    expect(loggers.$('filter', 'filter').level).toEqual('info');
   });
 });

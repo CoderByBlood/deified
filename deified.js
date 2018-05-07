@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 
+const loggers = require('./loggers');
 const globber = require('./globber');
 const filtration = require('./filter');
 const scanner = require('./scanner');
@@ -33,9 +34,46 @@ const scanner = require('./scanner');
 
 /**
  * @description Ensures the [scanner]{@link module:scanner} configuration
- * can accept a [filter]{@link module:filter}
+ * can accept a [filter]{@link module:filter} and defaults logging
+ * to info levels
  **/
 const defaultConfig = {
+  log: {
+    name: "deified",
+    level: 'info',
+    children: [{
+        module: "main",
+        level: 'info',
+        children: [
+          { feature: 'configure', level: 'info' },
+          { feature: 'deify', level: 'info' },
+        ],
+      }, {
+        module: "scanner",
+        level: 'info',
+        children: [
+          { feature: 'configure', level: 'info' },
+          { feature: 'scan', level: 'info' },
+        ],
+      },
+      {
+        module: 'globber',
+        level: 'info',
+        children: [
+          { feature: 'configure', level: 'info' },
+          { feature: 'glob', level: 'info' },
+        ],
+      },
+      {
+        module: 'filter',
+        level: 'info',
+        children: [
+          { feature: 'configure', level: 'info' },
+          { feature: 'filter', level: 'info' },
+        ],
+      }
+    ],
+  },
   scan: {},
 };
 
@@ -52,13 +90,20 @@ module.exports = {
    * @return {function} Scans based on the configuration
    **/
   configure: function(conf) {
+
     const config = Object.assign({}, defaultConfig, conf);
+    loggers.configure(config.log);
+
+    const log = loggers.$('main', 'configure');
+    log.trace({ args: { conf } }, 'enter');
     const filter = filtration.configure(config.filter);
     const glob = globber.configure(config.glob);
 
     config.scan.filter = filter;
+    log.debug({ configuration: config }, 'configuration set');
 
     const scan = scanner.configure(config.scan);
+    log.debug('scanner configured');
 
 
     /**
@@ -73,6 +118,8 @@ module.exports = {
      * subdirectors - depth first
      **/
     return async function(dirInfo) {
+      const log = loggers.$('main', 'deify');
+      log.trace({ args: { dirInfo } }, 'enter');
       return glob(await scan(dirInfo));
     }
   },

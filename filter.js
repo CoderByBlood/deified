@@ -28,6 +28,9 @@
  * @module filter
  */
 
+
+const loggers = require('./loggers');
+
 /**
  * @description The default regex pattern filters hidden and node_modules directories
  * @default ['/[.]', '^[.]', '/?node_modules/', '^node_modules$']
@@ -47,9 +50,12 @@ module.exports = {
    * @return {function} Globs based on the configuration
    **/
   configure: function(conf) {
+    const log = loggers.$('filter', 'configure');
+    log.trace({ args: { conf } }, 'enter');
     const config = Object.assign({}, defaultConfig, conf);
     config.regexes = config.regexes || defaultConfig.regexes;
     config.regexes = (config.regexes.every && config.regexes) || [config.regexes];
+    log.debug({ configuration: config }, 'configuration set');
 
     /**
      * Filters the paths by the configured regular expressions
@@ -61,6 +67,9 @@ module.exports = {
      * @return {array} The filtered paths based on the regexs
      **/
     return function(paths) {
+      const log = loggers.$('filter', 'filter');
+      log.trace({ args: { paths } }, 'enter');
+
       return paths.filter(path => config.regexes.every(regex => !path.match(regex)));
     };
   },
