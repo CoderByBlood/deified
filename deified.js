@@ -39,39 +39,21 @@ const scanner = require('./scanner');
  **/
 const defaultConfig = {
   log: {
-    name: "deified",
-    level: 'info',
-    children: [{
-        module: "main",
-        level: 'info',
-        children: [
-          { feature: 'configure', level: 'info' },
-          { feature: 'deify', level: 'info' },
-        ],
-      }, {
-        module: "scanner",
-        level: 'info',
-        children: [
-          { feature: 'configure', level: 'info' },
-          { feature: 'scan', level: 'info' },
-        ],
-      },
-      {
-        module: 'globber',
-        level: 'info',
-        children: [
-          { feature: 'configure', level: 'info' },
-          { feature: 'glob', level: 'info' },
-        ],
-      },
-      {
-        module: 'filter',
-        level: 'info',
-        children: [
-          { feature: 'configure', level: 'info' },
-          { feature: 'filter', level: 'info' },
-        ],
-      }
+    classes: ['name', 'module', 'feature'],
+    logs: [
+      { log: 'deified', level: 'info' },
+      { log: 'deified.main', level: 'info' },
+      { log: 'deified.main.configure', level: 'info' },
+      { log: 'deified.main.deify', level: 'info' },
+      { log: 'deified.scanner', level: 'info' },
+      { log: 'deified.scanner.configure', level: 'info' },
+      { log: 'deified.scanner.scan', level: 'info' },
+      { log: 'deified.globber', level: 'info' },
+      { log: 'deified.globber.configure', level: 'info' },
+      { log: 'deified.globber.glob', level: 'info' },
+      { log: 'deified.filter', level: 'info' },
+      { log: 'deified.filter.configure', },
+      { log: 'deified.filter.filter', level: 'info' },
     ],
   },
   scan: {},

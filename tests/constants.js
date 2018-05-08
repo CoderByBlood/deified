@@ -50,40 +50,21 @@ const paths = [
 ];
 
 const logConfig = {
-  name: "deified",
-  level: 'debug',
-  children: [{
-      module: "main",
-      level: 'info',
-      children: [
-        { feature: 'configure', level: 'info' },
-        { feature: 'deify', level: 'info' },
-      ],
-    },
-    {
-      module: "scanner",
-      level: 'warn',
-      children: [
-        { feature: 'configure', level: 'trace' },
-        { feature: 'scan', level: 'error' },
-      ],
-    },
-    {
-      module: 'globber',
-      level: 'error',
-      children: [
-        { feature: 'configure', level: 'debug' },
-        { feature: 'glob', level: 'warn' },
-      ],
-    },
-    {
-      module: 'filter',
-      level: 'warn',
-      children: [
-        { feature: 'configure', },
-        { feature: 'filter', level: 'fatal' },
-      ],
-    }
+  classes: ['name', 'module', 'feature'],
+  logs: [
+    { log: 'deified', level: 'debug' },
+    { log: 'deified.main', level: 'info' },
+    { log: 'deified.main.configure', level: 'info' },
+    { log: 'deified.main.deify', level: 'info' },
+    { log: 'deified.scanner', level: 'warn' },
+    { log: 'deified.scanner.configure', level: 'trace' },
+    { log: 'deified.scanner.scan', level: 'error' },
+    { log: 'deified.globber', level: 'error' },
+    { log: 'deified.globber.configure', level: 'debug' },
+    { log: 'deified.globber.glob', level: 'warn' },
+    { log: 'deified.filter', level: 'warn' },
+    { log: 'deified.filter.configure', },
+    { log: 'deified.filter.filter', level: 'fatal' },
   ],
 };
 

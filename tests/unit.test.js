@@ -136,8 +136,7 @@ describe('The scanner should...', () => {
 });
 
 describe('The logger should...', () => {
-  test('create loggers with levels set', () => {
-
+  test('configure implicit loggers with levels set', () => {
     loggers.configure(logConfig);
     expect(loggers.$().level).toEqual('debug');
     expect(loggers.$('filter').level).toEqual('warn');
@@ -153,5 +152,25 @@ describe('The logger should...', () => {
     expect(loggers.$('globber', 'configure').level).toEqual('info');
     expect(loggers.$('filter', 'configure').level).toEqual('info');
     expect(loggers.$('filter', 'filter').level).toEqual('info');
+  });
+
+  test('configure explicit loggers with levels set', () => {
+    loggers.configure(logConfig);
+    expect(loggers._().level).toEqual('info');
+    expect(loggers._('deified').level).toEqual('debug');
+    expect(loggers._('deified', 'filter').level).toEqual('warn');
+    expect(loggers._('deified', 'scanner', 'configure').level).toEqual('trace');
+    expect(loggers._('deified', 'globber', 'configure').level).toEqual('debug');
+    expect(loggers._('deified', 'filter', 'configure').level).toEqual('warn');
+    expect(loggers._('deified', 'filter', 'filter').level).toEqual('fatal');
+
+    loggers.configure();
+    expect(loggers._().level).toEqual('info');
+    expect(loggers._('deified').level).toEqual('info');
+    expect(loggers._('deified', 'filter').level).toEqual('info');
+    expect(loggers._('deified', 'scanner', 'configure').level).toEqual('info');
+    expect(loggers._('deified', 'globber', 'configure').level).toEqual('info');
+    expect(loggers._('deified', 'filter', 'configure').level).toEqual('info');
+    expect(loggers._('deified', 'filter', 'filter').level).toEqual('info');
   });
 });
