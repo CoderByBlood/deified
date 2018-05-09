@@ -76,7 +76,7 @@ module.exports = {
     const config = Object.assign({}, defaultConfig, conf);
     loggers.configure(config.log);
 
-    const log = loggers.$('main', 'configure');
+    const log = loggers.$('deified.main.configure');
     log.trace({ args: { conf } }, 'enter');
     const filter = filtration.configure(config.filter);
     const glob = globber.configure(config.glob);
@@ -100,7 +100,7 @@ module.exports = {
      * subdirectors - depth first
      **/
     return async function(dirInfo) {
-      const log = loggers.$('main', 'deify');
+      const log = loggers.$('deified.main.deify');
       log.trace({ args: { dirInfo } }, 'enter');
       return glob(await scan(dirInfo));
     }

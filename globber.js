@@ -48,8 +48,8 @@ module.exports = {
    * @return {function} Globs based on the configuration
    **/
   configure: function(conf) {
-    const log = loggers.$('globber', 'configure');
-    log.trace({ args: { conf } }, 'enter - configure()');
+    const log = loggers.$('deified.globber.configure');
+    log.trace({ args: { conf } }, 'enter');
     const config = Object.assign({}, defaultConfig, conf);
     config.globs = config.globs || defaultConfig.globs;
     log.debug({ configuration: config }, 'configuration set');
@@ -64,7 +64,7 @@ module.exports = {
      * @return {array} The filtered paths based on the globs
      **/
     return function(paths) {
-      const log = loggers.$('globber', 'glob');
+      const log = loggers.$('deified.globber.glob');
       log.trace({ args: { paths } }, 'enter');
       return mm(paths, config.globs, config.options);
     };

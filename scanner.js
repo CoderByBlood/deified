@@ -47,7 +47,7 @@ module.exports = {
    * @return {function} Scans based on the configuration
    **/
   configure: function(conf) {
-    const log = loggers.$('scanner', 'configure');
+    const log = loggers.$('deified.scanner.configure');
     log.trace({ args: { conf } }, 'enter');
     const config = Object.assign({}, defaultConfig, conf);
     log.debug({ configuration: config }, 'configuration set');
@@ -61,7 +61,7 @@ module.exports = {
      * @return {array} The files argument
      **/
     const tree = async function(dir, files) {
-      const log = loggers.$('scanner', 'scan');
+      const log = loggers.$('deified.scanner.scan');
       log.debug('reading directory %s', dir);
 
       const filter = config.filter;
@@ -98,7 +98,7 @@ module.exports = {
      * @return {array} All of the files and subdirectors - depth first
      **/
     return async function(dirInfo) {
-      const log = loggers.$('scanner', 'scan');
+      const log = loggers.$('deified.scanner.scan');
       log.trace({ args: { dirInfo } }, 'enter');
       const info = Object.assign({}, defaultInfo, dirInfo);
       log.debug({ configuration: config }, 'info set');

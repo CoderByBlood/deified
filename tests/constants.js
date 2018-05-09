@@ -68,4 +68,19 @@ const logConfig = {
   ],
 };
 
-module.exports = { paths, logConfig };
+const logPartial = {
+  classes: ['name', 'module', 'feature'],
+  logs: [
+    { log: 'deified', level: 'debug' },
+    { log: 'deified.main.configure', level: 'info' },
+    { log: 'deified.main.deify', level: 'info' },
+    { log: 'deified.scanner.configure', level: 'trace' },
+    { log: 'deified.scanner.scan', level: 'error' },
+    { log: 'deified.globber.configure', level: 'debug' },
+    { log: 'deified.globber.glob', level: 'warn' },
+    { log: 'deified.filter.configure', },
+    { log: 'deified.filter.filter', level: 'fatal' },
+  ],
+};
+
+module.exports = { paths, logConfig, logPartial };

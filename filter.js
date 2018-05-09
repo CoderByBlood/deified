@@ -50,7 +50,7 @@ module.exports = {
    * @return {function} Globs based on the configuration
    **/
   configure: function(conf) {
-    const log = loggers.$('filter', 'configure');
+    const log = loggers.$('filter.configure');
     log.trace({ args: { conf } }, 'enter');
     const config = Object.assign({}, defaultConfig, conf);
     config.regexes = config.regexes || defaultConfig.regexes;
@@ -67,7 +67,7 @@ module.exports = {
      * @return {array} The filtered paths based on the regexs
      **/
     return function(paths) {
-      const log = loggers.$('filter', 'filter');
+      const log = loggers.$('filter.filter');
       log.trace({ args: { paths } }, 'enter');
 
       return paths.filter(path => config.regexes.every(regex => !path.match(regex)));
