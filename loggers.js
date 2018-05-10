@@ -28,26 +28,37 @@ const defaultConfig = {
   logs: [],
 };
 
-let logs = {};
+let configs = {};
 
-const toKey = function(parts) {
-  return parts.filter(x => x).join('.');
+const numberOfDots = function(string) {
+  let result = 0;
+  for (let i = 0; i < string.length; i++) {
+    if (string[i] == '.') { result++ };
+  }
+
+  return result;
 };
 
-const toParts = function(key) {
-  return key.split('.');
+const toParentFQC = function(fqc) {
+  return (fqc && fqc.replace(/[.]?[^.]+$/, '')) || '';
 };
 
-const toParentKey = function(parts) {
-  return toKey(parts.slice(0, parts.length - 1));
+
+const toParentConfig = function(fqc) {
+  let config = configs[fqc];
+  for (let p = toParentFQC(fqc); !config && p; p = toParentFQC(p)) {
+    config = configs[p];
+  }
+
+  return config;
 };
 
-const objectify = function(fqc, classes) {
-  const o = {};
-  const parts = toParts(fqc || '');
+const objectify = function(fqc, classes, def, obj) {
+  const o = Object.assign({}, def, obj);
+  const parts = (fqc || '').split('.');
 
-  classes.forEach((x, i) => {
-    o[x] = parts[i];
+  (classes || []).forEach((x, i) => {
+    o[x] = o[x] || parts[i];
   });
 
   return o;
@@ -55,55 +66,40 @@ const objectify = function(fqc, classes) {
 
 module.exports = {
   configure: function(conf) {
-    logs = {};
+    configs = {};
 
     const config = Object.assign({}, defaultConfig, conf);
     const classes = config.classes;
     const defaultConf = { log: '' };
-    const loggers = config.logs.map(x => {
-      const logless = Object.assign({}, defaultConf, x);
-      const log = toParts(logless.log);
 
-      logless.log = undefined;
-      return { log, config: logless };
-    });
-
-    function findParent(lineage) {
-      let parent;
-      for (let i = lineage.length - 1; i > 0 && !parent; --i) {
-        parent = logs[toKey(lineage.slice(0, i))];
-      }
-
-      return parent || pino();
-    }
-
+    configs._classes = classes;
     classes.forEach((claz, i) => {
-      loggers.filter(x => x.log.length === i + 1).forEach(x => {
-        const key = toKey(x.log);
-        const parentKey = toParentKey(x.log);
+      config.logs.filter(x => numberOfDots(x.log) === i).forEach(x => {
+        const fqc = x.log;
+        const logless = Object.assign({}, defaultConf, x);
+        delete logless.log;
 
-        //if we skipped a classification, fill it in
-        if (parentKey && !logs[parentKey]) {
-          const parentConfig = {};
-
-          parentConfig[classes[i - 1]] = x.log[i - 1];
-          logs[parentKey] = findParent(x.log).child(parentConfig);
-        }
-
-        x.config[claz] = x.log[i];
-        logs[key] = findParent(x.log).child(x.config);
-
-        if (i === 0) {
-          logs._ = function(fqc) {
-            return logs[fqc] || pino().child(objectify(fqc, classes));
-          };
-        }
+        configs[x.log] = objectify(fqc, classes, toParentConfig(fqc), logless);
       });
     });
   },
 
   $: function(fqc) {
-    return logs._ && logs._(fqc) ||
-      pino().child(objectify(fqc, defaultConfig.classes));
+    let config = configs[fqc];
+    if (!config) {
+      const parent = toParentConfig(fqc);
+
+      if (parent) {
+        config = objectify(fqc, configs._classes, parent);
+      }
+      else {
+        config = objectify(fqc, configs._classes);
+      }
+
+      //cache for next time
+      configs[fqc] = config;
+    }
+
+    return pino().child(config);
   },
 };
