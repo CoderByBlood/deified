@@ -21,7 +21,7 @@ const config = { //optional - all configuration has intuitive defaults
   }
   log: { //configures the pino log framework - defaults to info level
     classes: ['name', 'module', 'feature'], //classifies the log properties separated by '.'
-    logs: [ //{name: 'deified', module: 'main', feature: 'configure'}
+    logs: [                                 //{name: 'deified', module: 'main', feature: 'configure'}
       { log: 'deified', level: 'info' },
       { log: 'deified.main', level: 'info' },
       { log: 'deified.main.configure', level: 'info' },
