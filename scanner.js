@@ -10,7 +10,18 @@ const readdir = promisify(fs.readdir);
 const stat = promisify(fs.stat);
 const defaultConfig = {};
 const defaultInfo = { directory: '.' };
-const loggers = require('./loggers');
+const d = require('debug');
+const ns = 'deified:scanner:';
+const log = {
+  debug: {
+    configure: d(ns + 'configure'),
+    scan: d(ns + 'scan'),
+  },
+  trace: {
+    configure: d(ns + 'configure:trace'),
+    scan: d(ns + 'scan:trace'),
+  },
+};
 
 /**
  * Scan files in any directory and return them in an array.
@@ -28,11 +39,10 @@ module.exports = {
    *
    * @return {function} Scans based on the configuration
    **/
-  configure: function(conf) {
-    const log = loggers.$('deified.scanner.configure');
-    log.trace({ args: { conf } }, 'enter');
-    const config = Object.assign({}, defaultConfig, conf);
-    log.debug({ configuration: config }, 'configuration set');
+  configure: function(config) {
+    log.trace.configure({ args: { config } }, 'enter');
+    const conf = Object.assign({}, defaultConfig, config);
+    log.debug.configure({ configuration: conf }, 'configuration set');
 
     /**
      * Recursively builds a list of files and directories for the specified
@@ -43,25 +53,24 @@ module.exports = {
      * @return {array} The files argument
      **/
     const tree = async function(dir, files) {
-      const log = loggers.$('deified.scanner.scan');
-      log.debug('reading directory %s', dir);
+      log.trace.configure('reading directory %s', dir);
 
-      const filter = config.filter;
-      const ls = await readdir(dir, config.options);
+      const filter = conf.filter;
+      const ls = await readdir(dir, conf.options);
 
       for (let i = 0; i < ls.length; i++) {
         const file = path.join(dir, ls[i]);
         if (!filter || filter([file]).length) {
 
-          log.trace('file %s passed through fitler', file);
+          log.trace.configure('file %s passed through fitler', file);
           files.push(file);
 
           if ((await stat(file)).isDirectory()) {
-            log.trace('directory %s found, recurse', file);
+            log.trace.configure('directory %s found, recurse', file);
             await tree(file, files);
           }
           else {
-            log.trace('file %s was filtered', file);
+            log.trace.configure('file %s was filtered', file);
           }
         }
       }
@@ -80,10 +89,9 @@ module.exports = {
      * @return {array} All of the files and subdirectors - depth first
      **/
     return async function(dirInfo) {
-      const log = loggers.$('deified.scanner.scan');
-      log.trace({ args: { dirInfo } }, 'enter');
+      log.trace.scan({ args: { dirInfo } }, 'enter');
       const info = Object.assign({}, defaultInfo, dirInfo);
-      log.debug({ configuration: config }, 'info set');
+      log.debug.scan({ configuration: conf }, 'info set');
 
       return await tree(info.directory || defaultInfo.directory, []);
     };

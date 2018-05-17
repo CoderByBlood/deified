@@ -3,6 +3,18 @@
  * Copyright (c) 2018 Coder by Blood, Inc.
  */
 
+const d = require('debug');
+const ns = 'deified:filter:';
+const log = {
+  debug: {
+    configure: d(ns + 'configure'),
+    filter: d(ns + 'filter'),
+  },
+  trace: {
+    configure: d(ns + 'configure:trace'),
+    filter: d(ns + 'filter:trace'),
+  },
+};
 
 /**
  * Apply a regular expression pattern to strings in an array and
@@ -10,8 +22,6 @@
  * @module filter
  */
 
-
-const loggers = require('./loggers');
 
 /**
  * @description The default regex pattern filters hidden and node_modules directories
@@ -31,13 +41,12 @@ module.exports = {
    * - `config.globs` is an array of glob patterns
    * @return {function} Globs based on the configuration
    **/
-  configure: function(conf) {
-    const log = loggers.$('deified.filter.configure');
-    log.trace({ args: { conf } }, 'enter');
-    const config = Object.assign({}, defaultConfig, conf);
-    config.regexes = config.regexes || defaultConfig.regexes;
-    config.regexes = (config.regexes.every && config.regexes) || [config.regexes];
-    log.debug({ configuration: config }, 'configuration set');
+  configure(config) {
+    log.trace.configure({ args: { config } }, 'enter');
+    const conf = Object.assign({}, defaultConfig, config);
+    conf.regexes = conf.regexes || defaultConfig.regexes;
+    conf.regexes = Array.isArray(conf.regexes) ? conf.regexes : [conf.regexes];
+    log.debug.configure({ configuration: conf }, 'configuration set');
 
     /**
      * Filters the paths by the configured regular expressions
@@ -48,11 +57,10 @@ module.exports = {
      *
      * @return {array} The filtered paths based on the regexs
      **/
-    return function(paths) {
-      const log = loggers.$('deified.filter.filter');
-      log.trace({ args: { paths } }, 'enter');
+    return function filter(paths) {
+      log.trace.filter({ args: { paths } }, 'enter');
 
-      return paths.filter(path => config.regexes.every(regex => !path.match(regex)));
+      return paths.filter(path => conf.regexes.every(regex => !path.match(regex)));
     };
   },
 };

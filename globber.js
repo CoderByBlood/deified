@@ -4,7 +4,18 @@
  */
 
 const mm = require('micromatch');
-const loggers = require('./loggers');
+const d = require('debug');
+const ns = 'deified:globber:';
+const log = {
+  debug: {
+    configure: d(ns + 'configure'),
+    glob: d(ns + 'glob'),
+  },
+  trace: {
+    configure: d(ns + 'configure:trace'),
+    glob: d(ns + 'glob:trace'),
+  },
+};
 
 /**
  * Apply a glob pattern to strings in an array and return the filtered array.
@@ -29,12 +40,11 @@ module.exports = {
    *
    * @return {function} Globs based on the configuration
    **/
-  configure: function(conf) {
-    const log = loggers.$('deified.globber.configure');
-    log.trace({ args: { conf } }, 'enter');
-    const config = Object.assign({}, defaultConfig, conf);
-    config.globs = config.globs || defaultConfig.globs;
-    log.debug({ configuration: config }, 'configuration set');
+  configure(config) {
+    log.trace.configure({ args: { config } }, 'enter');
+    const conf = Object.assign({}, defaultConfig, config);
+    conf.globs = conf.globs || defaultConfig.globs;
+    log.debug.configure({ configuration: conf }, 'configuration set');
 
     /**
      * Filters the paths by the configured globs
@@ -45,10 +55,9 @@ module.exports = {
      *
      * @return {array} The filtered paths based on the globs
      **/
-    return function(paths) {
-      const log = loggers.$('deified.globber.glob');
-      log.trace({ args: { paths } }, 'enter');
-      return mm(paths, config.globs, config.options);
+    return function glob(paths) {
+      log.trace.glob({ args: { paths } }, 'enter');
+      return mm(paths, conf.globs, conf.options);
     };
   },
 };

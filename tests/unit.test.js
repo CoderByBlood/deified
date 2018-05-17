@@ -7,13 +7,11 @@
 
 const path = require('path');
 const mm = require('micromatch');
-const loggers = require('../loggers');
 const globber = require('../globber');
 const filtration = require('../filter');
 const scanner = require('../scanner');
 const constants = require('./constants');
 const paths = constants.paths;
-const logConfig = constants.logConfig;
 
 describe('The globber should...', () => {
   test('using defaults, identify all but hidden files', () => {
@@ -114,44 +112,5 @@ describe('The scanner should...', () => {
 
     expect(results).toContain(path.join(__dirname, 'unit.test.js'));
     expect(results).toContain(path.join(__dirname, 'constants.js'));
-  });
-});
-
-describe('The logger should...', () => {
-  test('configure loggers with full configuration set', () => {
-    loggers.configure(logConfig);
-    expect(loggers.$().level).toEqual('info');
-    expect(loggers.$('deified').level).toEqual('debug');
-    expect(loggers.$('deified.filter').level).toEqual('warn');
-    expect(loggers.$('deified.scanner.configure').level).toEqual('trace');
-    expect(loggers.$('deified.globber.configure').level).toEqual('debug');
-    expect(loggers.$('deified.filter.configure').level).toEqual('warn');
-    expect(loggers.$('deified.filter.filter').level).toEqual('fatal');
-
-    loggers.configure();
-    expect(loggers.$().level).toEqual('info');
-    expect(loggers.$('deified.filter').level).toEqual('info');
-    expect(loggers.$('deified.scanner.configure').level).toEqual('info');
-    expect(loggers.$('deified.globber.configure').level).toEqual('info');
-    expect(loggers.$('deified.filter.configure').level).toEqual('info');
-    expect(loggers.$('deified.filter.filter').level).toEqual('info');
-  });
-
-  test('configure loggers with partial configuration set', () => {
-    loggers.configure(constants.logPartial);
-    expect(loggers.$().level).toEqual('info');
-    expect(loggers.$('deified.filter').level).toEqual('debug');
-    expect(loggers.$('deified.scanner.configure').level).toEqual('trace');
-    expect(loggers.$('deified.globber.configure').level).toEqual('debug');
-    expect(loggers.$('deified.filter.configure').level).toEqual('debug');
-    expect(loggers.$('deified.filter.filter').level).toEqual('fatal');
-
-    loggers.configure();
-    expect(loggers.$().level).toEqual('info');
-    expect(loggers.$('deified.filter').level).toEqual('info');
-    expect(loggers.$('deified.scanner.configure').level).toEqual('info');
-    expect(loggers.$('deified.globber.configure').level).toEqual('info');
-    expect(loggers.$('deified.filter.configure').level).toEqual('info');
-    expect(loggers.$('deified.filter.filter').level).toEqual('info');
   });
 });

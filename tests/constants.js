@@ -31,38 +31,4 @@ const paths = [
   'test/.git/test.js', //24
 ];
 
-const logConfig = {
-  classes: ['name', 'module', 'feature'],
-  logs: [
-    { log: 'deified', level: 'debug' },
-    { log: 'deified.main', level: 'info' },
-    { log: 'deified.main.configure', level: 'info' },
-    { log: 'deified.main.deify', level: 'info' },
-    { log: 'deified.scanner', level: 'warn' },
-    { log: 'deified.scanner.configure', level: 'trace' },
-    { log: 'deified.scanner.scan', level: 'error' },
-    { log: 'deified.globber', level: 'error' },
-    { log: 'deified.globber.configure', level: 'debug' },
-    { log: 'deified.globber.glob', level: 'warn' },
-    { log: 'deified.filter', level: 'warn' },
-    { log: 'deified.filter.configure', },
-    { log: 'deified.filter.filter', level: 'fatal' },
-  ],
-};
-
-const logPartial = {
-  classes: ['name', 'module', 'feature'],
-  logs: [
-    { log: 'deified', level: 'debug' },
-    { log: 'deified.main.configure', level: 'info' },
-    { log: 'deified.main.deify', level: 'info' },
-    { log: 'deified.scanner.configure', level: 'trace' },
-    { log: 'deified.scanner.scan', level: 'error' },
-    { log: 'deified.globber.configure', level: 'debug' },
-    { log: 'deified.globber.glob', level: 'warn' },
-    { log: 'deified.filter.configure', },
-    { log: 'deified.filter.filter', level: 'fatal' },
-  ],
-};
-
-module.exports = { paths, logConfig, logPartial };
+module.exports = { paths, };

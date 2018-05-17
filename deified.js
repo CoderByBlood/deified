@@ -3,10 +3,21 @@
  * Copyright (c) 2018 Coder by Blood, Inc.
  */
 
-const loggers = require('./loggers');
 const globber = require('./globber');
 const filtration = require('./filter');
 const scanner = require('./scanner');
+const d = require('debug');
+const ns = 'deified:';
+const log = {
+  debug: {
+    configure: d(ns + 'configure'),
+    deify: d(ns + 'deify'),
+  },
+  trace: {
+    configure: d(ns + 'configure:trace'),
+    deify: d(ns + 'deify:trace'),
+  },
+};
 
 /**
  * Scans a directory for files and subdirectories and filters using regular
@@ -16,28 +27,9 @@ const scanner = require('./scanner');
 
 /**
  * @description Ensures the [scanner]{@link module:scanner} configuration
- * can accept a [filter]{@link module:filter} and defaults logging
- * to info levels
+ * can accept a [filter]{@link module:filter}
  **/
 const defaultConfig = {
-  log: {
-    classes: ['name', 'module', 'feature'],
-    logs: [
-      { log: 'deified', level: 'info' },
-      { log: 'deified.main', level: 'info' },
-      { log: 'deified.main.configure', level: 'info' },
-      { log: 'deified.main.deify', level: 'info' },
-      { log: 'deified.scanner', level: 'info' },
-      { log: 'deified.scanner.configure', level: 'info' },
-      { log: 'deified.scanner.scan', level: 'info' },
-      { log: 'deified.globber', level: 'info' },
-      { log: 'deified.globber.configure', level: 'info' },
-      { log: 'deified.globber.glob', level: 'info' },
-      { log: 'deified.filter', level: 'info' },
-      { log: 'deified.filter.configure', },
-      { log: 'deified.filter.filter', level: 'info' },
-    ],
-  },
   scan: {},
 };
 
@@ -53,21 +45,19 @@ module.exports = {
    *
    * @return {function} Scans based on the configuration
    **/
-  configure: function(conf) {
+  configure(config) {
 
-    const config = Object.assign({}, defaultConfig, conf);
-    loggers.configure(config.log);
+    const conf = Object.assign({}, defaultConfig, config);
 
-    const log = loggers.$('deified.main.configure');
-    log.trace({ args: { conf } }, 'enter');
-    const filter = filtration.configure(config.filter);
-    const glob = globber.configure(config.glob);
+    log.trace.configure({ args: { config } }, 'enter');
+    const filter = filtration.configure(conf.filter);
+    const glob = globber.configure(conf.glob);
 
-    config.scan.filter = filter;
-    log.debug({ configuration: config }, 'configuration set');
+    conf.scan.filter = filter;
+    log.debug.configure({ configuration: conf }, 'configuration set');
 
-    const scan = scanner.configure(config.scan);
-    log.debug('scanner configured');
+    const scan = scanner.configure(conf.scan);
+    log.debug.configure('scanner configured');
 
 
     /**
@@ -81,9 +71,8 @@ module.exports = {
      * @return {array} All of the post filtered files and
      * subdirectors - depth first
      **/
-    return async function(dirInfo) {
-      const log = loggers.$('deified.main.deify');
-      log.trace({ args: { dirInfo } }, 'enter');
+    return async function deify(dirInfo) {
+      log.trace.deify({ args: { dirInfo } }, 'enter');
       return glob(await scan(dirInfo));
     }
   },
