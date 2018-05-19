@@ -42,11 +42,11 @@ module.exports = {
    * @return {function} Globs based on the configuration
    **/
   configure(config) {
-    log.trace.configure({ args: { config } }, 'enter');
+    log.trace.configure({ enter: 'configure', args: { config } });
     const conf = Object.assign({}, defaultConfig, config);
     conf.regexes = conf.regexes || defaultConfig.regexes;
     conf.regexes = Array.isArray(conf.regexes) ? conf.regexes : [conf.regexes];
-    log.debug.configure({ configuration: conf }, 'configuration set');
+    log.debug.configure({ conf });
 
     /**
      * Filters the paths by the configured regular expressions
@@ -58,8 +58,7 @@ module.exports = {
      * @return {array} The filtered paths based on the regexs
      **/
     return function filter(paths) {
-      log.trace.filter({ args: { paths } }, 'enter');
-
+      log.trace.filter({ enter: 'filter', args: { paths } });
       return paths.filter(path => conf.regexes.every(regex => !path.match(regex)));
     };
   },

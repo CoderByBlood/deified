@@ -61,7 +61,6 @@ typings/
 log
 out
 doc
-package-lock.json
 
 #IDE exclusions
 nbproject

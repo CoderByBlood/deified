@@ -49,15 +49,14 @@ module.exports = {
 
     const conf = Object.assign({}, defaultConfig, config);
 
-    log.trace.configure({ args: { config } }, 'enter');
+    log.trace.configure({ enter: 'configure', args: { config } });
     const filter = filtration.configure(conf.filter);
     const glob = globber.configure(conf.glob);
 
     conf.scan.filter = filter;
-    log.debug.configure({ configuration: conf }, 'configuration set');
+    log.debug.configure({ conf });
 
     const scan = scanner.configure(conf.scan);
-    log.debug.configure('scanner configured');
 
 
     /**
@@ -72,7 +71,7 @@ module.exports = {
      * subdirectors - depth first
      **/
     return async function deify(dirInfo) {
-      log.trace.deify({ args: { dirInfo } }, 'enter');
+      log.trace.deify({ enter: 'deify', args: { dirInfo } });
       return glob(await scan(dirInfo));
     }
   },

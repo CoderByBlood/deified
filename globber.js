@@ -41,10 +41,10 @@ module.exports = {
    * @return {function} Globs based on the configuration
    **/
   configure(config) {
-    log.trace.configure({ args: { config } }, 'enter');
+    log.trace.configure({ enter: 'configure', args: { config } });
     const conf = Object.assign({}, defaultConfig, config);
     conf.globs = conf.globs || defaultConfig.globs;
-    log.debug.configure({ configuration: conf }, 'configuration set');
+    log.debug.configure({ conf });
 
     /**
      * Filters the paths by the configured globs
@@ -56,7 +56,7 @@ module.exports = {
      * @return {array} The filtered paths based on the globs
      **/
     return function glob(paths) {
-      log.trace.glob({ args: { paths } }, 'enter');
+      log.trace.glob({ enter: 'glob', args: { paths } });
       return mm(paths, conf.globs, conf.options);
     };
   },

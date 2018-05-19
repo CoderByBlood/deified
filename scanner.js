@@ -40,9 +40,9 @@ module.exports = {
    * @return {function} Scans based on the configuration
    **/
   configure: function(config) {
-    log.trace.configure({ args: { config } }, 'enter');
+    log.trace.configure({ enter: 'configure', args: { config } });
     const conf = Object.assign({}, defaultConfig, config);
-    log.debug.configure({ configuration: conf }, 'configuration set');
+    log.debug.configure({ conf });
 
     /**
      * Recursively builds a list of files and directories for the specified
@@ -53,7 +53,7 @@ module.exports = {
      * @return {array} The files argument
      **/
     const tree = async function(dir, files) {
-      log.trace.configure('reading directory %s', dir);
+      log.trace.configure({ reading: dir });
 
       const filter = conf.filter;
       const ls = await readdir(dir, conf.options);
@@ -62,15 +62,12 @@ module.exports = {
         const file = path.join(dir, ls[i]);
         if (!filter || filter([file]).length) {
 
-          log.trace.configure('file %s passed through fitler', file);
+          log.trace.configure({ passed_fitler: file });
           files.push(file);
 
           if ((await stat(file)).isDirectory()) {
-            log.trace.configure('directory %s found, recurse', file);
+            log.trace.configure({ recursing: file });
             await tree(file, files);
-          }
-          else {
-            log.trace.configure('file %s was filtered', file);
           }
         }
       }
@@ -89,9 +86,9 @@ module.exports = {
      * @return {array} All of the files and subdirectors - depth first
      **/
     return async function(dirInfo) {
-      log.trace.scan({ args: { dirInfo } }, 'enter');
+      log.trace.scan({ enter: 'scan', args: { dirInfo } });
       const info = Object.assign({}, defaultInfo, dirInfo);
-      log.debug.scan({ configuration: conf }, 'info set');
+      log.debug.scan({ info });
 
       return await tree(info.directory || defaultInfo.directory, []);
     };

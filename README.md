@@ -19,24 +19,6 @@ const config = { //optional - all configuration has intuitive defaults
   scan: {
     options: { encoding: 'utf8' } //options for readdir - defaults to undefined
   }
-  log: { //configures the pino log framework - defaults to info level
-    classes: ['name', 'module', 'feature'], //classifies the log properties separated by '.'
-    logs: [                                 //{name: 'deified', module: 'main', feature: 'configure'}
-      { log: 'deified', level: 'info' },
-      { log: 'deified.main', level: 'info' },
-      { log: 'deified.main.configure', level: 'info' },
-      { log: 'deified.main.deify', level: 'info' },
-      { log: 'deified.scanner', level: 'info' },
-      { log: 'deified.scanner.configure', level: 'info' },
-      { log: 'deified.scanner.scan', level: 'info' },
-      { log: 'deified.globber', level: 'info' },
-      { log: 'deified.globber.configure', level: 'info' },
-      { log: 'deified.globber.glob', level: 'info' },
-      { log: 'deified.filter', level: 'info' },
-      { log: 'deified.filter.configure', },
-      { log: 'deified.filter.filter', level: 'info' },
-    ],
-  },
 };
 
 const deify = deified.configure(config);
