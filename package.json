@@ -9,7 +9,8 @@
   "main": "deified.js",
   "scripts": {
     "test": "jest --verbose --coverage",
-    "jsdoc": "jsdoc  --configure ./jsdoc-conf.json --package ./package.json"
+    "jsdoc": "jsdoc --configure ./jsdoc-conf.json --package ./package.json",
+    "pretest": "eslint *.js tests/*.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,15 @@
   },
   "homepage": "https://github.com/CoderByBlood/deified#readme",
   "devDependencies": {
+    "babel-eslint": "^10.0.1",
     "coveralls": "^3.0.2",
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.12.3",
+    "eslint-plugin-vue": "^5.1.0",
     "jest": "^22.4.4",
     "jsdoc": "^3.5.5"
   },

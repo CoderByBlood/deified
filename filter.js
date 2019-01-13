@@ -4,15 +4,16 @@
  */
 
 const d = require('debug');
+
 const ns = 'deified:filter:';
 const log = {
   debug: {
-    configure: d(ns + 'configure'),
-    filter: d(ns + 'filter'),
+    configure: d(`${ns}configure`),
+    filter: d(`${ns}filter`),
   },
   trace: {
-    configure: d(ns + 'configure:trace'),
-    filter: d(ns + 'filter:trace'),
+    configure: d(`${ns}configure:trace`),
+    filter: d(`${ns}filter:trace`),
   },
 };
 
@@ -27,7 +28,7 @@ const log = {
  * @description The default regex pattern filters hidden and node_modules directories
  * @default ['/[.]', '^[.]', '/?node_modules/', '^node_modules$']
  *
- **/
+ */
 const defaultConfig = {
   regexes: ['/[.]', '^[.]', '/?node_modules/', '^node_modules$'],
 };
@@ -40,7 +41,7 @@ module.exports = {
    * @param {object} config - Holds the configuration for the globbing
    * - `config.globs` is an array of glob patterns
    * @return {function} Globs based on the configuration
-   **/
+   */
   configure(config) {
     log.trace.configure({ enter: 'configure', args: { config } });
     const conf = Object.assign({}, defaultConfig, config);
@@ -56,7 +57,7 @@ module.exports = {
      * @param {array} paths - The paths to apply the regexes to
      *
      * @return {array} The filtered paths based on the regexs
-     **/
+     */
     return function filter(paths) {
       log.trace.filter({ enter: 'filter', args: { paths } });
       return paths.filter(path => conf.regexes.every(regex => !path.match(regex)));

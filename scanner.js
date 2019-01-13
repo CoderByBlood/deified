@@ -3,23 +3,24 @@
  * Copyright (c) 2018 Coder by Blood, Inc.
  */
 
+const d = require('debug');
 const { promisify } = require('util');
 const fs = require('fs');
 const path = require('path');
+
 const readdir = promisify(fs.readdir);
 const stat = promisify(fs.stat);
 const defaultConfig = {};
 const defaultInfo = { directory: '.' };
-const d = require('debug');
 const ns = 'deified:scanner:';
 const log = {
   debug: {
-    configure: d(ns + 'configure'),
-    scan: d(ns + 'scan'),
+    configure: d(`${ns}configure`),
+    scan: d(`${ns}scan`),
   },
   trace: {
-    configure: d(ns + 'configure:trace'),
-    scan: d(ns + 'scan:trace'),
+    configure: d(`${ns}configure:trace`),
+    scan: d(`${ns}scan:trace`),
   },
 };
 
@@ -38,8 +39,8 @@ module.exports = {
    * - [`config.filter`]{@link module:filter} filters the results from readdir
    *
    * @return {function} Scans based on the configuration
-   **/
-  configure: function(config) {
+   */
+  configure(config) {
     log.trace.configure({ enter: 'configure', args: { config } });
     const conf = Object.assign({}, defaultConfig, config);
     log.debug.configure({ conf });
@@ -51,22 +52,23 @@ module.exports = {
      * @param {string} dir - The directory to list (ls)
      * @param {array} files - The array for appending files/directors
      * @return {array} The files argument
-     **/
-    const tree = async function(dir, files) {
+     */
+    const tree = async function tree(dir, files) {
       log.trace.configure({ reading: dir });
 
-      const filter = conf.filter;
+      const { filter } = conf;
       const ls = await readdir(dir, conf.options);
 
-      for (let i = 0; i < ls.length; i++) {
+      for (let i = 0; i < ls.length; i += 1) {
         const file = path.join(dir, ls[i]);
         if (!filter || filter([file]).length) {
-
           log.trace.configure({ passed_fitler: file });
           files.push(file);
 
+          // eslint-disable-next-line no-await-in-loop
           if ((await stat(file)).isDirectory()) {
             log.trace.configure({ recursing: file });
+            // eslint-disable-next-line no-await-in-loop
             await tree(file, files);
           }
         }
@@ -84,13 +86,13 @@ module.exports = {
      * - `dirInfo.directory` is the directory to scan
      *
      * @return {array} All of the files and subdirectors - depth first
-     **/
-    return async function(dirInfo) {
+     */
+    return async function scan(dirInfo) {
       log.trace.scan({ enter: 'scan', args: { dirInfo } });
       const info = Object.assign({}, defaultInfo, dirInfo);
       log.debug.scan({ info });
 
-      return await tree(info.directory || defaultInfo.directory, []);
+      return tree(info.directory || defaultInfo.directory, []);
     };
   },
 };

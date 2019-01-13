@@ -3,19 +3,20 @@
  * Copyright (c) 2018 Coder by Blood, Inc.
  */
 
+const d = require('debug');
 const globber = require('./globber');
 const filtration = require('./filter');
 const scanner = require('./scanner');
-const d = require('debug');
+
 const ns = 'deified:';
 const log = {
   debug: {
-    configure: d(ns + 'configure'),
-    deify: d(ns + 'deify'),
+    configure: d(`${ns}configure`),
+    deify: d(`${ns}deify`),
   },
   trace: {
-    configure: d(ns + 'configure:trace'),
-    deify: d(ns + 'deify:trace'),
+    configure: d(`${ns}configure:trace`),
+    deify: d(`${ns}deify:trace`),
   },
 };
 
@@ -28,7 +29,7 @@ const log = {
 /**
  * @description Ensures the [scanner]{@link module:scanner} configuration
  * can accept a [filter]{@link module:filter}
- **/
+ */
 const defaultConfig = {
   scan: {},
 };
@@ -44,9 +45,8 @@ module.exports = {
    * - `config.scan` is passed to [scanner]{@link module:scanner}
    *
    * @return {function} Scans based on the configuration
-   **/
+   */
   configure(config) {
-
     const conf = Object.assign({}, defaultConfig, config);
 
     log.trace.configure({ enter: 'configure', args: { config } });
@@ -69,10 +69,10 @@ module.exports = {
      *
      * @return {array} All of the post filtered files and
      * subdirectors - depth first
-     **/
+     */
     return async function deify(dirInfo) {
       log.trace.deify({ enter: 'deify', args: { dirInfo } });
       return glob(await scan(dirInfo));
-    }
+    };
   },
 };
