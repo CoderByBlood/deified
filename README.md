@@ -1,20 +1,21 @@
 # deified
-  Fast, lightweight, asynchronous directory scanner built on [micromatch](https://github.com/micromatch/micromatch)
 
-  [![NPM Version][npm-image]][npm-url]
-  [![NPM Downloads][downloads-image]][downloads-url]
-  [![CI Build][travis-image]][travis-url]
-  [![Test Coverage][coveralls-image]][coveralls-url]
+Fast, lightweight, asynchronous directory scanner built on [micromatch](https://github.com/micromatch/micromatch)
+
+[![NPM Version][npm-image]][npm-url]
+[![NPM Downloads][downloads-image]][downloads-url]
+[![CI Build][travis-image]][travis-url]
+[![Test Coverage][coveralls-image]][coveralls-url]
 
 ```js
 const deified = require('deified');
 const config = { //optional - all configuration has intuitive defaults
+  filter: {
+    regexes: ['/?test/'] //defaults to filter out hidden files and node_modules
+  },
   glob: {
     globs: ['**/*.js'], //passed to micromatch - defaults to [**/*]
     options: {}, //options for micromatch mm() - defaults to undefied
-  },
-  filter: {
-    regexes: ['/?test/'] //defaults to filter out hidden files and node_modules
   },
   scan: {
     options: { encoding: 'utf8' } //options for readdir - defaults to undefined
@@ -37,27 +38,28 @@ Installation is done using the
 [`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
 
 ```bash
-$ npm install deified
+npm install deified
 ```
 
 ## Features
 
-  * Based on the fast micromatch
-  * Filters apply during directory scanning to eliminate unnessesary IO
-  * Globs apply after scanning to fine tune results
-  * IO uses asynchronous filesystem calls
+* Based on the fast micromatch
+* Filters apply during directory scanning to eliminate unnessesary IO
+* Globs apply after scanning to fine tune results
+* IO uses asynchronous filesystem calls
 
-**Filters and globs are inverses of each other**
-  * *Filters* remove paths that match (negative)
-  * *Globs* keep paths that match (postive)
+### Filters and globs are inverses of each other
+
+* *Filters* remove paths that match (negative)
+* *Globs* keep paths that match (postive)
 
 ## Tests
 
   To run the test suite, first install the dependencies, then run `npm test`:
 
 ```bash
-$ npm install
-$ npm test
+npm install
+npm test
 ```
 
 ## People
