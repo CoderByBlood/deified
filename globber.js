@@ -5,15 +5,16 @@
 
 const mm = require('micromatch');
 const d = require('debug');
+
 const ns = 'deified:globber:';
 const log = {
   debug: {
-    configure: d(ns + 'configure'),
-    glob: d(ns + 'glob'),
+    configure: d(`${ns}configure`),
+    glob: d(`${ns}glob`),
   },
   trace: {
-    configure: d(ns + 'configure:trace'),
-    glob: d(ns + 'glob:trace'),
+    configure: d(`${ns}configure:trace`),
+    glob: d(`${ns}glob:trace`),
   },
 };
 
@@ -25,7 +26,7 @@ const log = {
 /**
  * @description The default glob pattern matches everything
  * @default ['**&#8205;/**']
- **/
+ */
 const defaultConfig = {
   globs: ['**/*'],
 };
@@ -39,7 +40,7 @@ module.exports = {
    * - `config.globs` is an array of glob patterns
    *
    * @return {function} Globs based on the configuration
-   **/
+   */
   configure(config) {
     log.trace.configure({ enter: 'configure', args: { config } });
     const conf = Object.assign({}, defaultConfig, config);
@@ -54,7 +55,7 @@ module.exports = {
      * @param {array} paths - The paths to apply the globs to
      *
      * @return {array} The filtered paths based on the globs
-     **/
+     */
     return function glob(paths) {
       log.trace.glob({ enter: 'glob', args: { paths } });
       return mm(paths, conf.globs, conf.options);

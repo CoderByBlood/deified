@@ -3,7 +3,8 @@
  * Copyright (c) 2018 Coder by Blood, Inc.
  */
 
-/*global expect*/
+// eslint-disable-next-line spaced-comment
+/*global expect describe test*/
 
 const path = require('path');
 const mm = require('micromatch');
@@ -11,7 +12,8 @@ const globber = require('../globber');
 const filtration = require('../filter');
 const scanner = require('../scanner');
 const constants = require('./constants');
-const paths = constants.paths;
+
+const { paths } = constants;
 
 describe('The globber should...', () => {
   test('using defaults, identify all but hidden files', () => {
@@ -24,12 +26,12 @@ describe('The globber should...', () => {
     expect(globbed).toEqual(expect.arrayContaining(selectedPaths));
     expect(selectedPaths).toEqual(expect.arrayContaining(globbed));
 
-    //corner case
-    const globbed_2 = globber.configure({ globs: undefined });
-    const selected_2 = globbed_2(paths);
+    // corner case
+    const globbed2 = globber.configure({ globs: undefined });
+    const selected2 = globbed2(paths);
 
-    expect(selected_2).toEqual(expect.arrayContaining(selectedPaths));
-    expect(selectedPaths).toEqual(expect.arrayContaining(selected_2));
+    expect(selected2).toEqual(expect.arrayContaining(selectedPaths));
+    expect(selectedPaths).toEqual(expect.arrayContaining(selected2));
   });
 
   test('using a custom glob pattern, identify specified files', () => {
@@ -57,12 +59,12 @@ describe('The filter should...', () => {
     expect(filtered).toEqual(expect.arrayContaining(selectedPaths));
     expect(selectedPaths).toEqual(expect.arrayContaining(filtered));
 
-    //corner case
-    const filter_2 = filtration.configure({ regexes: undefined });
-    const filtered_2 = filter_2(paths);
+    // corner case
+    const filter2 = filtration.configure({ regexes: undefined });
+    const filtered2 = filter2(paths);
 
-    expect(filtered_2).toEqual(expect.arrayContaining(selectedPaths));
-    expect(selectedPaths).toEqual(expect.arrayContaining(filtered_2));
+    expect(filtered2).toEqual(expect.arrayContaining(selectedPaths));
+    expect(selectedPaths).toEqual(expect.arrayContaining(filtered2));
   });
 
   test('using a custom regex, filter specified files', () => {
@@ -76,19 +78,19 @@ describe('The filter should...', () => {
     expect(filtered).toEqual(expect.arrayContaining(selectedPaths));
     expect(selectedPaths).toEqual(expect.arrayContaining(filtered));
 
-    //corner case
-    const regexes_2 = '(node_modules/|/selector/|/?test/)';
-    const selectedPaths_2 = paths.filter(x => !x.match(regexes_2));
-    const filter_2 = filtration.configure({ regexes: regexes_2 });
-    const filtered_2 = filter_2(paths);
+    // corner case
+    const regexes2 = '(node_modules/|/selector/|/?test/)';
+    const selectedPaths2 = paths.filter(x => !x.match(regexes2));
+    const filter2 = filtration.configure({ regexes: regexes2 });
+    const filtered2 = filter2(paths);
 
-    expect(filtered_2).toEqual(expect.arrayContaining(selectedPaths_2));
-    expect(selectedPaths_2).toEqual(expect.arrayContaining(filtered_2));
+    expect(filtered2).toEqual(expect.arrayContaining(selectedPaths2));
+    expect(selectedPaths2).toEqual(expect.arrayContaining(filtered2));
   });
 });
 
 describe('The scanner should...', () => {
-  test('list all files starting from the default directory', async() => {
+  test('list all files starting from the default directory', async () => {
     expect.assertions(4);
 
     const tests = ['package.json', 'tests/unit.test.js'];
@@ -98,13 +100,13 @@ describe('The scanner should...', () => {
 
     tests.forEach(x => expect(results).toContain(x));
 
-    //corner case
-    const results_2 = await scan({ directory: undefined });
+    // corner case
+    const results2 = await scan({ directory: undefined });
 
-    tests.forEach(x => expect(results_2).toContain(x));
+    tests.forEach(x => expect(results2).toContain(x));
   });
 
-  test('list files starting from a specified directory', async() => {
+  test('list files starting from a specified directory', async () => {
     expect.assertions(2);
 
     const scan = scanner.configure();
