@@ -1,3 +1,5 @@
+# DEPRECATED
+
 # deified
 
 Fast, lightweight, asynchronous directory scanner built on [micromatch](https://github.com/micromatch/micromatch)
