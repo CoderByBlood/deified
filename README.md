@@ -1,4 +1,4 @@
-# DEPRECATED
+# DEPRECATED - Please use npm module 'globby' instead
 
 # deified
 
